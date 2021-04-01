@@ -1,6 +1,6 @@
 {
     "BaseUrl": "http://partnerapi.funda.nl/feeds/Aanbod.svc/json/[key]/",
-    "APIKey": "***REMOVED***",
+    "APIKey": "REPLACE_ME",
     "Query": "?type=koop&zo=/amsterdam/tuin/&page=1&pagesize=25"
 
 }
