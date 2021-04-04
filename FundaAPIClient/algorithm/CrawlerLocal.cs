@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -22,26 +23,59 @@ namespace FundaAPIClient
         /// </summary>
         public const string ALL_AMSTERDAM_WITH_TUIN_FOLDER = "assets/amsterdam_tuin/";
 
-
         private FundaData CrawlerData { get; set; } = null;
-        private void ReadAllData()
-        {
 
+        private void ReadAllAmsterdamData()
+        {
             CrawlerData = new FundaData();
 
+            #region read all amsterdam data
             DirectoryInfo dinfo = new DirectoryInfo(ALL_AMSTERDAM_FOLDER);
             FileInfo[] amsterdam_all = dinfo.GetFiles("*.json");
 
+            foreach (FileInfo f in amsterdam_all)
+            {
+                String contents = File.ReadAllText(f.FullName);
+                CrawlerData.ParseJson(contents);
+            }
+            #endregion
+        }
+        private void ReadAmsterdamTuinData()
+        {
+            CrawlerData = new FundaData();
 
-            dinfo = new DirectoryInfo(ALL_AMSTERDAM_WITH_TUIN_FOLDER);
+            #region read all amstermdam tuin data
+            DirectoryInfo dinfo = new DirectoryInfo(ALL_AMSTERDAM_WITH_TUIN_FOLDER);
             FileInfo[] amsterdam_tuin = dinfo.GetFiles("*.json");
 
-
+            foreach (FileInfo f in amsterdam_tuin)
+            {
+                String contents = File.ReadAllText(f.FullName);
+                CrawlerData.ParseJson(contents);
+            }
+            #endregion
 
         }
+
+
         public FundaData Crawl()
         {
-            throw new System.NotImplementedException();
+            return CrawlerData;
+        }
+
+        public void Configure(Dictionary<string, string> options)
+        {
+            if (options.ContainsKey("Method") && options["Method"] == "WithTuin")
+            {
+                if (options["Method"] == "Top10WithTuin")
+                {
+                    this.ReadAmsterdamTuinData();
+                }
+                else if (options["Method"] == "Top10")
+                {
+                    this.ReadAllAmsterdamData();
+                }
+            }
         }
     }
 }
