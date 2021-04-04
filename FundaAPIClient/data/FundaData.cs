@@ -6,7 +6,7 @@ namespace FundaAPIClient
 {
     public class FundaData
     {
-        List<FundaJSON> Files = new List<FundaJSON>();
+        public List<FundaJSON> Files = new List<FundaJSON>();
 
         public void ParseJson(string json)
         {

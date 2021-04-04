@@ -7,6 +7,12 @@ namespace FundaAPIClient
         FundaData GetTop10Makelaars();
 
         FundaData GetTop10MakelaarsWithTuin();
+
+        /// <summary>
+        /// Add a Crawler Algorithm to the FundaAPIClient
+        /// </summary>
+        /// <param name="crawlerAlgorithm">The algorithm as a parameter to pass</param>
+        void AddCrawler(ICrawlerAlgorithm crawlerAlgorithm);
     }
 
 }

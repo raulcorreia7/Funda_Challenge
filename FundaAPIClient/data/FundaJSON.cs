@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-public class Metadata
+namespace FundaAPIClient
+{
+    public class Metadata
     {
         [JsonProperty("ObjectType")]
         public string ObjectType { get; set; }
@@ -435,3 +437,4 @@ public class Metadata
         public int? TotaalAantalObjecten { get; set; }
     }
 
+}

@@ -5,6 +5,7 @@ namespace FundaAPIClient
     public class FundaAPIClient : IFundaAPIClient
     {
 
+        private ICrawlerAlgorithm CrawlerAlgorithm { get; set; } = null;
 
         public FundaAPIClient()
         {
@@ -20,10 +21,15 @@ namespace FundaAPIClient
             throw new System.NotImplementedException();
         }
 
-        public FundaData Algorithm()
+        public FundaData Run()
         {
 
             return null;
+        }
+
+        public void AddCrawler(ICrawlerAlgorithm crawlerAlgorithm)
+        {
+            this.CrawlerAlgorithm = crawlerAlgorithm;
         }
     }
 }

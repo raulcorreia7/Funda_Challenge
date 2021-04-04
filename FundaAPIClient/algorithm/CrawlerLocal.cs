@@ -65,7 +65,7 @@ namespace FundaAPIClient
 
         public void Configure(Dictionary<string, string> options)
         {
-            if (options.ContainsKey("Method") && options["Method"] == "WithTuin")
+            if (options.ContainsKey("Method"))
             {
                 if (options["Method"] == "Top10WithTuin")
                 {
