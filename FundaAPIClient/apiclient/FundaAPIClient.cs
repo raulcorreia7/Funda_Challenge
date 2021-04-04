@@ -7,29 +7,32 @@ namespace FundaAPIClient
 
         private ICrawlerAlgorithm CrawlerAlgorithm { get; set; } = null;
 
+        private IFundaDataProcessor DataProcessor { get; set; } = null;
         public FundaAPIClient()
         {
         }
 
-        public FundaData GetTop10Makelaars()
+        public FundaResults GetTop10Makelaars()
         {
-            throw new System.NotImplementedException();
+            
+            var rawdata = this.CrawlerAlgorithm.Crawl();
+            var processedData = this.DataProcessor.ProcessData(rawdata);
+            return processedData;
         }
 
-        public FundaData GetTop10MakelaarsWithTuin()
+        public FundaResults GetTop10MakelaarsWithTuin()
         {
             throw new System.NotImplementedException();
-        }
-
-        public FundaData Run()
-        {
-
-            return null;
         }
 
         public void AddCrawler(ICrawlerAlgorithm crawlerAlgorithm)
         {
             this.CrawlerAlgorithm = crawlerAlgorithm;
+        }
+
+        public void AddDataProcessor(IFundaDataProcessor dataProcessor)
+        {
+            this.DataProcessor = dataProcessor;
         }
     }
 }

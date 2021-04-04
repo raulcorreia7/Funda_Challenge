@@ -9,7 +9,7 @@ namespace FundaAPIClient
 
     public class FundaJsonDataProcessor : IFundaDataProcessor
     {
-        public FundaResults ProcessFundaData(FundaData data)
+        public FundaResults ProcessData(FundaData data)
         {
 
             // Dictionary using makelaarId as a key, for fast key lookup

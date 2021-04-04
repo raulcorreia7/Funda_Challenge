@@ -4,9 +4,9 @@ namespace FundaAPIClient
 {
     public interface IFundaAPIClient
     {
-        FundaData GetTop10Makelaars();
+        FundaResults GetTop10Makelaars();
 
-        FundaData GetTop10MakelaarsWithTuin();
+        FundaResults GetTop10MakelaarsWithTuin();
 
         /// <summary>
         /// Add a Crawler Algorithm to the FundaAPIClient

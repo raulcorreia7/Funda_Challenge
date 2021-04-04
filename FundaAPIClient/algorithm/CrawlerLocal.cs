@@ -65,13 +65,13 @@ namespace FundaAPIClient
 
         public void Configure(Dictionary<string, string> options)
         {
-            if (options.ContainsKey("Method"))
+            if (options.ContainsKey(CrawlerConstants.MethodKey))
             {
-                if (options["Method"] == "Top10WithTuin")
+                if (options[CrawlerConstants.MethodKey] == CrawlerConstants.MethodTop10WithTuin)
                 {
                     this.ReadAmsterdamTuinData();
                 }
-                else if (options["Method"] == "Top10")
+                else if (options[CrawlerConstants.MethodKey] == CrawlerConstants.MethodTop10)
                 {
                     this.ReadAllAmsterdamData();
                 }
