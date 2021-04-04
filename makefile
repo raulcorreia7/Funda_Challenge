@@ -14,3 +14,4 @@ clean:
 
 run:
 	dotnet run --project FundaAPIClient
+
