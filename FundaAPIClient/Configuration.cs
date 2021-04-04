@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using Newtonsoft.Json;
 using RestSharp.Serialization.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -24,7 +25,7 @@ namespace FundaAPIClient
         public static Configuration LoadConfiguration()
         {
             var lines = File.ReadAllText(ConfigurationFile);
-            return JsonSerializer.Deserialize<Configuration>(lines);
+            return JsonConvert.DeserializeObject<Configuration>(lines);
         }
 
     }

@@ -4,9 +4,9 @@ namespace FundaAPIClient
 {
     public interface IFundaAPIClient
     {
-        Dictionary<string, long> GetTop10Makelaars();
+        FundaData GetTop10Makelaars();
 
-        Dictionary<string, long> GetTop10MakelaarsWithTuin();
+        FundaData GetTop10MakelaarsWithTuin();
     }
 
 }
