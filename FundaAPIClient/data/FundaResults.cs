@@ -19,14 +19,24 @@ namespace FundaAPIClient
         }
 
 
+        public string GetTableString()
+        {
+            var table = new ConsoleTable("Makelaar", "Objects");
+
+            return ConsoleTable
+                .From<Makelaar>(this.GetTop10())
+                .Configure(o => o.NumberAlignment = Alignment.Right)
+                .ToStringAlternative();
+        }
+
         public void PrintTable()
         {
             var table = new ConsoleTable("Makelaar", "Objects");
 
             ConsoleTable
-                .From<Makelaar>(this.Results)
+                .From<Makelaar>(this.GetTop10())
                 .Configure(o => o.NumberAlignment = Alignment.Right)
-                .Write(Format.Alternative);
+                .Write();
         }
     }
 

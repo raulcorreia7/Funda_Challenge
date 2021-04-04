@@ -48,7 +48,7 @@ namespace FundaAPIClient
             }
 
             // Create a list with processed data ordered by count
-            List<Makelaar> orderedMakelaars = new List<Makelaar>(processedData.Values.OrderBy(m => m.Count));
+            List<Makelaar> orderedMakelaars = new List<Makelaar>(processedData.Values.OrderByDescending(m => m.Count));
             return new FundaResults()
             {
                 Results = orderedMakelaars
