@@ -7,6 +7,10 @@ namespace FundaAPIClient.Tests
 
     public class CrawerLocalTests
     {
+
+        /// <summary>
+        /// Use Local Crawl algorithm locally to check our system is working with files in the hard disk.
+        /// </summary>
         [Fact]
         public void CrawlLocallyAllAmsterdamData()
         {

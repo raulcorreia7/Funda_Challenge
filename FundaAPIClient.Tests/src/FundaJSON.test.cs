@@ -8,6 +8,11 @@ namespace FundaAPIClient.Tests
 
     public class FundaJSONTests
     {
+        /// <summary>
+        /// Parse the json file "assets/amsterdam_all/p1.json" and do some sanity check.
+        /// The goal of this test is to understand if our Selerization/Deselirization works properly.
+        /// 
+        /// </summary>
         [Fact]
         public void SucessfullyParseLocalJsonDataAllAmsterdam()
         {
@@ -43,7 +48,11 @@ namespace FundaAPIClient.Tests
 
         }
 
-
+        /// <summary>
+        /// Parse the json file "assets/amsterdam_tuin/p1.json" and do some sanity check.
+        /// The goal of this test is to understand if our Selerization/Deselirization works properly.
+        /// 
+        /// </summary>
         [Fact]
         public void SucessfullyParseLocalJsonDataAmsterdamTuin()
         {

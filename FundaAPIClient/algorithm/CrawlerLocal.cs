@@ -6,6 +6,12 @@ using FundaAPIClient;
 
 namespace FundaAPIClient
 {
+
+    /// <summary>
+    /// This is a Local Crawler for Funda JSON Data.
+    /// The purpose of this class is to validate the whole system with a cached files, 
+    /// decoupling the system with online API calls limitation and giving a early fail fast validation layer.
+    /// </summary>
     public class CrawlerLocal : ICrawlerAlgorithm
     {
         /// <summary>
@@ -23,14 +29,23 @@ namespace FundaAPIClient
         /// </summary>
         public const string ALL_AMSTERDAM_WITH_TUIN_FOLDER = "assets/amsterdam_tuin/";
 
-        private FundaData CrawlerData { get; set; } = null;
+        /// <summary>
+        /// CrawlerData
+        /// </summary>
+        /// <value></value>
+        private FundaRawData CrawlerData { get; set; } = null;
 
-        private void ReadAllAmsterdamData()
+        /// <summary>
+        /// Common Json Code Path.
+        /// Reads Json and Parses it.
+        /// </summary>
+        /// <param name="folderPath">folder pointing to funda json files.</param>
+        private void ReadJsonFiles(string folderPath)
         {
-            CrawlerData = new FundaData();
+            CrawlerData = new FundaRawData();
 
-            #region read all amsterdam data
-            DirectoryInfo dinfo = new DirectoryInfo(ALL_AMSTERDAM_FOLDER);
+            #region read all json data
+            DirectoryInfo dinfo = new DirectoryInfo(folderPath);
             FileInfo[] amsterdam_all = dinfo.GetFiles("*.json");
 
             foreach (FileInfo f in amsterdam_all)
@@ -40,29 +55,42 @@ namespace FundaAPIClient
             }
             #endregion
         }
-        private void ReadAmsterdamTuinData()
+
+        /// <summary>
+        /// Reads Data for all Makelaars for Amsterdam
+        /// </summary>
+        private void ReadAllAmsterdamData()
         {
-            CrawlerData = new FundaData();
-
-            #region read all amstermdam tuin data
-            DirectoryInfo dinfo = new DirectoryInfo(ALL_AMSTERDAM_WITH_TUIN_FOLDER);
-            FileInfo[] amsterdam_tuin = dinfo.GetFiles("*.json");
-
-            foreach (FileInfo f in amsterdam_tuin)
-            {
-                String contents = File.ReadAllText(f.FullName);
-                CrawlerData.ParseJson(contents);
-            }
-            #endregion
-
+            ReadJsonFiles(ALL_AMSTERDAM_FOLDER);
         }
 
+        /// <summary>
+        /// Reads Data for all Makelaars for Amsterdam with Tuin
+        /// </summary>
+        private void ReadAmsterdamTuinData()
+        {
+            ReadJsonFiles(ALL_AMSTERDAM_WITH_TUIN_FOLDER);
+        }
 
-        public FundaData Crawl()
+        /// <summary>
+        /// Crawl command
+        /// </summary>
+        /// <returns>Crawler Data</returns>
+        public FundaRawData Crawl()
         {
             return CrawlerData;
         }
-
+        /// <summary>
+        /// Configure Crawler
+        /// 
+        /// LocalCrawler uses the following options:
+        ///  Key : Value
+        /// {
+        ///    "Method" : "Top10" or "Top10WithTuin"
+        /// }
+        /// Please use Crawler Constants.
+        /// </summary>
+        /// <param name="options">Dictionary with Key Value pair to configure Crawler.</param>
         public void Configure(Dictionary<string, string> options)
         {
             if (options.ContainsKey(CrawlerConstants.MethodKey))

@@ -2,6 +2,6 @@ namespace FundaAPIClient
 {
     public interface IFundaDataProcessor
     {
-        FundaResults ProcessData(FundaData data);
+        FundaResults ProcessData(FundaRawData data);
     }
 }

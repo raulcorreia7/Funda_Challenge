@@ -9,10 +9,22 @@ namespace FundaAPIClient
     public class Configuration
     {
 
+        /// <summary>
+        /// BaseURL for FundaAPI
+        /// </summary>
+        /// <value></value>
         public string BaseUrl { get; set; }
 
+        /// <summary>
+        /// API Key for FundaAPI
+        /// </summary>
+        /// <value></value>
         public string APIKey { get; set; }
 
+        /// <summary>
+        ///  Query
+        /// </summary>
+        /// <value></value>
         public string Query { get; set; }
 
         private static readonly string ConfigurationFile = "config.json";

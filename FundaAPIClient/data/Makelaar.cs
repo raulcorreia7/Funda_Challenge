@@ -1,5 +1,8 @@
 namespace FundaAPIClient
 {
+    /// <summary>
+    /// POCO class for a Makelaar
+    /// </summary>
     public class Makelaar
     {
 
