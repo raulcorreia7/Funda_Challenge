@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using FundaAPIClient;
+using Serilog;
 
 namespace FundaAPIClient
 {
@@ -42,6 +43,7 @@ namespace FundaAPIClient
         /// <param name="folderPath">folder pointing to funda json files.</param>
         private void ReadJsonFiles(string folderPath)
         {
+            Log.Debug($"CrawlerLocal :: Reading json files for folder: {folderPath}");
             CrawlerData = new FundaRawData();
 
             #region read all json data
@@ -50,7 +52,9 @@ namespace FundaAPIClient
 
             foreach (FileInfo f in amsterdam_all)
             {
+                Log.Debug($"CrawlerLocal :: Reading : {f.Name}");
                 String contents = File.ReadAllText(f.FullName);
+                Log.Debug($"CrawlerLocal :: Parsing : {f.Name}");
                 CrawlerData.ParseJson(contents);
             }
             #endregion
@@ -61,6 +65,7 @@ namespace FundaAPIClient
         /// </summary>
         private void ReadAllAmsterdamData()
         {
+            Log.Debug("CrawlerLocal :: Reading All Amsterdam Cached Data");
             ReadJsonFiles(ALL_AMSTERDAM_FOLDER);
         }
 
@@ -69,6 +74,7 @@ namespace FundaAPIClient
         /// </summary>
         private void ReadAmsterdamTuinData()
         {
+            Log.Debug("CrawlerLocal :: Reading All Amsterdam with Tuin Cached Data");
             ReadJsonFiles(ALL_AMSTERDAM_WITH_TUIN_FOLDER);
         }
 
@@ -78,6 +84,7 @@ namespace FundaAPIClient
         /// <returns>Crawler Data</returns>
         public FundaRawData Crawl()
         {
+            Log.Verbose("CrawlerLocal :: Crawling...");
             return CrawlerData;
         }
         /// <summary>
@@ -93,15 +100,23 @@ namespace FundaAPIClient
         /// <param name="options">Dictionary with Key Value pair to configure Crawler.</param>
         public void Configure(Dictionary<string, string> options)
         {
+            Log.Verbose($"CrawlerLocal :: Configuring CrawlerLocal : {options.ToString()}");
+            Log.Debug($"CrawlerLocal :: Check if we have Key : {CrawlerConstants.MethodKey}");
             if (options.ContainsKey(CrawlerConstants.MethodKey))
             {
+                Log.Debug($"CrawlerLocal :: Check if {CrawlerConstants.MethodKey} = {CrawlerConstants.MethodTop10WithTuin}");
                 if (options[CrawlerConstants.MethodKey] == CrawlerConstants.MethodTop10WithTuin)
                 {
                     this.ReadAmsterdamTuinData();
                 }
-                else if (options[CrawlerConstants.MethodKey] == CrawlerConstants.MethodTop10)
+
+                else
                 {
-                    this.ReadAllAmsterdamData();
+                    Log.Debug($"CrawlerLocal :: Check if {CrawlerConstants.MethodKey} = {CrawlerConstants.MethodTop10}");
+                    if (options[CrawlerConstants.MethodKey] == CrawlerConstants.MethodTop10)
+                    {
+                        this.ReadAllAmsterdamData();
+                    }
                 }
             }
         }

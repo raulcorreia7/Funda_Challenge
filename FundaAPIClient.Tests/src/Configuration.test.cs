@@ -1,9 +1,16 @@
 using Xunit;
+using Xunit.Abstractions;
 
 namespace FundaAPIClient.Tests
 {
     public class ConfigurationTests
     {
+
+        public ConfigurationTests(ITestOutputHelper output)
+        {
+            LoggerSetup.SetupLoggerForTest(output);
+        }
+        
         [Fact]
         public void TestConfigFileIsGood()
         {

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace FundaAPIClient
 {
@@ -9,7 +11,7 @@ namespace FundaAPIClient
     /// </summary>
     public class FundaRawData
     {
-        public List<FundaJSON> Files = new List<FundaJSON>();
+        public List<FundaJSON> Data = new List<FundaJSON>();
 
         /// <summary>
         /// Parse JSON File
@@ -17,13 +19,49 @@ namespace FundaAPIClient
         /// <param name="json"></param>
         public void ParseJson(string json)
         {
+
+            Log.Debug($"FundaRawData :: Deserializing {json}");
             FundaJSON fundaJSON = JsonConvert.DeserializeObject<FundaJSON>(json);
 
             if (fundaJSON != null)
             {
-                Files.Add(fundaJSON);
+                Log.Debug("FundaRawData :: Saving Deserialized data");
+                Data.Add(fundaJSON);
             }
 
+        }
+
+        public int GetCurrentPage()
+        {
+            Log.Debug("FundaRawData :: Getting current json page");
+            if (Data != null && Data.Count > 0)
+            {
+                int page = Data.Last().Paging.HuidigePagina.Value;
+                Log.Debug($"FundaRawData :: Current Page is : {page}");
+                return page;
+            }
+            else
+            {
+                Log.Error("FundaRawData :: Failed to get current page, no data available.");
+                return 0;
+            }
+
+        }
+
+        public int GetPageLimit()
+        {
+
+            if (Data != null && Data.Count > 0)
+            {
+                int pageLimit = Data.First().Paging.AantalPaginas.Value;
+                Log.Debug($"FundaRawData :: Current Page Limit : {pageLimit}");
+                return pageLimit;
+            }
+            else
+            {
+                Log.Error("FundaRawData :: Failed to get current page limit, no data available.");
+                return 0;
+            }
         }
     }
 }

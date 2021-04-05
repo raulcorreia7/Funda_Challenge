@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RestSharp.Extensions;
+using Serilog;
 
 namespace FundaAPIClient
 {
@@ -12,12 +13,14 @@ namespace FundaAPIClient
         public FundaResults ProcessData(FundaRawData data)
         {
 
+            Log.Debug("FundaJsonDataProcessor :: Starting to Process Data");
+
             // Dictionary using makelaarId as a key, for fast key lookup
             Dictionary<int, Makelaar> processedData = new Dictionary<int, Makelaar>();
 
 
             // Iterate Json files
-            foreach (var json in data.Files)
+            foreach (var json in data.Data)
             {
                 // If there are objects in the json data
                 if (json.Objects.Count > 0)
@@ -47,6 +50,7 @@ namespace FundaAPIClient
                 }
             }
 
+            Log.Debug("FundaJsonDataProcessor :: Finishined Processing Data");
             // Create a list with processed data ordered by count
             List<Makelaar> orderedMakelaars = new List<Makelaar>(processedData.Values.OrderByDescending(m => m.Count));
             return new FundaResults()

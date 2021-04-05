@@ -2,12 +2,19 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace FundaAPIClient.Tests
 {
 
     public class FundaJSONTests
     {
+
+        public FundaJSONTests(ITestOutputHelper output)
+        {
+            LoggerSetup.SetupLoggerForTest(output);
+        }
+
         /// <summary>
         /// Parse the json file "assets/amsterdam_all/p1.json" and do some sanity check.
         /// The goal of this test is to understand if our Selerization/Deselirization works properly.

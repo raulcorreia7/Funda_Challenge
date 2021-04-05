@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ConsoleTables;
+using Serilog;
 
 namespace FundaAPIClient
 {
@@ -20,6 +21,7 @@ namespace FundaAPIClient
         /// <returns></returns>
         public IEnumerable<Makelaar> GetTop10()
         {
+            Log.Verbose("FundaResults :: Getting Top 10 Makelaars");
             return this.Results.Take(10);
         }
 
@@ -29,6 +31,7 @@ namespace FundaAPIClient
         /// <returns>String representing the Table</returns>
         public string GetTableString()
         {
+            Log.Debug("FundaResults :: Getting Table String");
             var table = new ConsoleTable("Makelaar", "Objects");
 
             return ConsoleTable
@@ -43,6 +46,7 @@ namespace FundaAPIClient
         /// <returns>String representing the Table</returns>
         public void PrintTable()
         {
+            Log.Debug("FundaResults :: Printing Table");
             var table = new ConsoleTable("Makelaar", "Objects");
 
             ConsoleTable

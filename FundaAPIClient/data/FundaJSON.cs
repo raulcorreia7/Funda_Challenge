@@ -394,9 +394,17 @@ namespace FundaAPIClient
 
     public class Paging
     {
+        /// <summary>
+        /// Total Pages from Funda API
+        /// </summary>
+        /// <value></value>
         [JsonProperty("AantalPaginas")]
         public int? AantalPaginas { get; set; }
 
+        /// <summary>
+        /// Current JSON page from Funda API
+        /// </summary>
+        /// <value></value>
         [JsonProperty("HuidigePagina")]
         public int? HuidigePagina { get; set; }
 

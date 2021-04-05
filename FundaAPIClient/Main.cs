@@ -1,4 +1,5 @@
 ﻿using System;
+using Serilog;
 
 namespace FundaAPIClient
 {
@@ -7,6 +8,8 @@ namespace FundaAPIClient
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+           
+            Log.Debug("Hello World!");
         }
     }
 }

@@ -2,6 +2,7 @@ using System.IO;
 using System.Text.Json;
 using Newtonsoft.Json;
 using RestSharp.Serialization.Json;
+using Serilog;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace FundaAPIClient
@@ -34,11 +35,27 @@ namespace FundaAPIClient
 
         }
 
+        private static Configuration ConfigurationInstance { get; set; }
+
         public static Configuration LoadConfiguration()
         {
+            Log.Debug($"Loading {ConfigurationFile}");
             var lines = File.ReadAllText(ConfigurationFile);
-            return JsonConvert.DeserializeObject<Configuration>(lines);
+            ConfigurationInstance = JsonConvert.DeserializeObject<Configuration>(lines);
+            Log.Debug($"Loaded {ConfigurationFile} sucessfully!");
+            return ConfigurationInstance;
         }
+
+        public static Configuration GetConfiguration()
+        {
+            Log.Debug($"Acessing GetConfiguration()");
+            if (ConfigurationInstance == null)
+            {
+                LoadConfiguration();
+            }
+            return ConfigurationInstance;
+        }
+
 
     }
 }

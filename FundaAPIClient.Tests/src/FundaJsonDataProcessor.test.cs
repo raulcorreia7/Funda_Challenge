@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -10,14 +11,11 @@ namespace FundaAPIClient.Tests
     public class FundaJsonDataProcessorTests
     {
 
-        /// <summary>
-        /// xUnit console writter helper.
-        /// </summary>
-        private readonly ITestOutputHelper Output;
 
         public FundaJsonDataProcessorTests(ITestOutputHelper output)
         {
-            this.Output = output;
+            LoggerSetup.SetupLoggerForTest(output);
+
         }
 
         /// <summary>
@@ -42,13 +40,16 @@ namespace FundaAPIClient.Tests
             Assert.NotNull(data);
             #endregion
 
+            #region Data Processing
             // Instantiate a Data Processor for type Json
             IFundaDataProcessor dataProcessor = new FundaJsonDataProcessor();
             // Process the data
             var results = dataProcessor.ProcessData(data);
 
             Assert.NotNull(results);
+            #endregion
 
+            #region Assertion
             // Assertion of the order, so we garante that the List is ordered by Markelaar Object Count.
             int previousValue = -1;
             foreach (var makelar in results.Results)
@@ -65,11 +66,13 @@ namespace FundaAPIClient.Tests
 
             // Quality of Life, outputting the Table
             var tableOutput = results.GetTableString();
-            Output.WriteLine(results.GetTableString());
-            Assert.True(tableOutput.Contains("12285"));
-            Assert.True(tableOutput.Contains("Makelaarsland"));
-            Assert.True(tableOutput.Contains("24607"));
-            Assert.True(tableOutput.Contains("Kuijs Reinder Kakes Makelaars Amsterdam"));
+            Log.Verbose(results.GetTableString());
+            Assert.Contains("12285", tableOutput);
+            Assert.Contains("Makelaarsland", tableOutput);
+            Assert.Contains("24607", tableOutput);
+            Assert.Contains("Kuijs Reinder Kakes Makelaars Amsterdam", tableOutput);
+
+            #endregion
         }
     }
 }
