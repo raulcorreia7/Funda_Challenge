@@ -37,6 +37,8 @@ namespace FundaAPIClient
 
         public const int API_THROTTLE_LIMIT_MILLISECS = (int)(60 / (MAX_API_CALLS_PER_MIN * API_CALLS_PERCENTAGE) * 1000);
 
+        public const int MAX_RETRY_COUNT = 10;
 
+        public const int API_TOO_MANY_REQUESTS_SLEEP_TIME = 100;
     }
 }

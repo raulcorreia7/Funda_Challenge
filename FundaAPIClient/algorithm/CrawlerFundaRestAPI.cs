@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading;
 using FundaAPIClient;
 using RestSharp;
+using Serilog;
 
 namespace FundaAPIClient
 {
@@ -30,6 +31,9 @@ namespace FundaAPIClient
         /// </summary>
         private FundaRawData CrawlerData { get; set; } = null;
 
+        // Are we querying with tuin?
+        private bool withTuin = false;
+
 
         private readonly RestClient restClient = new RestClient();
 
@@ -42,6 +46,7 @@ namespace FundaAPIClient
         /// <returns>String with a URL to Query API Funda </returns>
         private string ConstructURLQuery(string key, string datatype, long pageIndex, bool withTuin)
         {
+            Log.Debug("CrawlerFundaRestAPI :: Constructing Query");
             string Query = CrawlerConstants.API_URL;
 
             var keysToReplace = new Dictionary<string, string>();
@@ -55,51 +60,96 @@ namespace FundaAPIClient
             {
                 Query = Query.Replace(kv.Key, kv.Value);
             }
-
+            Log.Debug($"CrawlerFundaRestAPI :: Query : {Query}");
             return Query;
 
         }
 
         /// <summary>
-        /// Reads Data for all Makelaars for Amsterdam
+        /// Configure Crawler to get Amsterdam with all Data
         /// </summary>
-        private void ReadAllAmsterdamData()
+        private void ConfigureAmsterdamData()
         {
+            this.withTuin = false;
             CrawlerData = new FundaRawData();
 
+        }
+
+        /// <summary>
+        /// Configure Crawler to get Amsterdam with Tuin Data
+        /// </summary>
+        private void ConfigureAmsterdamTuinData()
+        {
+            this.withTuin = true;
+            CrawlerData = new FundaRawData();
+        }
+
+        /// <summary>
+        /// Crawl command
+        /// </summary>
+        /// <returns>Crawler Data</returns>
+        public FundaRawData Crawl()
+        {
+            Log.Debug("CrawlerFundaRestAPI :: Crawling...");
+            string apikey = Configuration.GetConfiguration().APIKey;
+
             long currentPage = 1;
-
-
-            // double maxAPICalls = CrawlerConstants.MAX_API_CALLS * CrawlerConstants.API_CALLS_PERCENTAGE;
+            // Starting stop watch
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
+            // Let's calculate delta time.
+            // Point of this is to calculate a rate of requests that is good enough to never trigger TooManyRequests. And if soo, handle it.
             long now = sw.ElapsedMilliseconds;
             long lastTick = sw.ElapsedMilliseconds;
+
+
+            int currentRetryCount = 0;
+
             while (true)
             {
                 now = sw.ElapsedMilliseconds;
                 long delta = now - lastTick;
                 lastTick = now;
 
+                // Check if we are over the throttling limit.
                 if (delta < CrawlerConstants.API_THROTTLE_LIMIT_MILLISECS)
                 {
-                    Thread.Sleep((int)(CrawlerConstants.API_THROTTLE_LIMIT_MILLISECS - delta));
+                    int sleepTime = (int)(CrawlerConstants.API_THROTTLE_LIMIT_MILLISECS - delta);
+                    Log.Debug($"CrawlerFundaRestAPI :: We hit the throttle limit, sleeping for {sleepTime}");
+                    // if so, sleep for a bit
+                    Thread.Sleep(sleepTime);
                 }
-                // Get an URL to query all Amsterdam data for Makelaars, no tuins.
-                string query = ConstructURLQuery(Configuration.GetConfiguration().APIKey, DataType, currentPage, false);
-                var request = new RestRequest(query, DataFormat.Json);
-                var response = restClient.Get(request);
 
+                // Get an URL to query all Amsterdam data for Makelaars, no tuins.
+                string query = ConstructURLQuery(apikey, DataType, currentPage, withTuin);
+                Log.Debug($"CrawlerFundaRestAPI :: Building new Request");
+                var request = new RestRequest(query, DataFormat.Json);
+                Log.Debug($"CrawlerFundaRestAPI :: Executing Request");
+                var response = restClient.Execute(request, Method.GET);
+
+                Log.Debug($"CrawlerFundaRestAPI :: We received an Response Status : {response.ResponseStatus}");
                 switch (response.ResponseStatus)
                 {
                     case ResponseStatus.Error:
                         switch (response.StatusCode)
                         {
-
+                            case HttpStatusCode.Unauthorized:
+                                Log.Error("CrawlerFundaRestAPI :: We are unauthorized to access the API. Something is wrong. Aborting!");
+                                throw new UnauthorizedAccessException("FundaAPI Unauthorized access.");
                             case HttpStatusCode.TooManyRequests:
+                                Log.Debug("CrawlerFundaRestAPI :: We hit a 429 (Too Many Request Error)");
+                                currentRetryCount++;
+                                Log.Debug($"CrawlerFundaRestAPI :: Retry Count : {currentRetryCount} / {CrawlerConstants.MAX_RETRY_COUNT}");
+                                Log.Debug($"CrawlerFundaRestAPI :: Sleeping {CrawlerConstants.API_TOO_MANY_REQUESTS_SLEEP_TIME}ms");
+                                Thread.Sleep(CrawlerConstants.API_TOO_MANY_REQUESTS_SLEEP_TIME);
+                                if (currentRetryCount > CrawlerConstants.MAX_RETRY_COUNT)
+                                {
+                                    goto error;
+                                }
                                 continue;
                             default:
+                                currentRetryCount++;
                                 break;
                         }
                         break;
@@ -112,7 +162,7 @@ namespace FundaAPIClient
                                 var maxPages = CrawlerData.GetPageLimit();
                                 if (currentPage >= maxPages)
                                 {
-                                    break;
+                                    goto end_gracefully;
                                 }
                                 currentPage++;
                             }
@@ -124,24 +174,13 @@ namespace FundaAPIClient
                 }
 
             }
-
-        }
-
-        /// <summary>
-        /// Reads Data for all Makelaars for Amsterdam with Tuin
-        /// </summary>
-        private void ReadAmsterdamTuinData()
-        {
-            // Get an URL to query all Amsterdam data for Makelaars, no tuins.
-            string Query = ConstructURLQuery(Configuration.GetConfiguration().APIKey, DataType, 1, true);
-        }
-
-        /// <summary>
-        /// Crawl command
-        /// </summary>
-        /// <returns>Crawler Data</returns>
-        public FundaRawData Crawl()
-        {
+        // handle error
+        error:
+        // to be implemented 
+        
+        // end_gracefuly
+        end_gracefully:
+            sw.Stop();
             return CrawlerData;
         }
         /// <summary>
@@ -161,11 +200,11 @@ namespace FundaAPIClient
             {
                 if (options[CrawlerConstants.MethodKey] == CrawlerConstants.MethodTop10WithTuin)
                 {
-                    this.ReadAmsterdamTuinData();
+                    this.ConfigureAmsterdamTuinData();
                 }
                 else if (options[CrawlerConstants.MethodKey] == CrawlerConstants.MethodTop10)
                 {
-                    this.ReadAllAmsterdamData();
+                    this.ConfigureAmsterdamData();
                 }
             }
         }
