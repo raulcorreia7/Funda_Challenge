@@ -12,7 +12,15 @@ namespace FundaAPIClient
     /// </summary>
     public class FundaRawData
     {
+        /*
+            We are using memory to save all json files.
+            For sake of alternatives we could use something else to save on memory like.
+            A remote database, a localdatabase or trim the json files to the bare minimum.
+        */
         public List<FundaJSON> Data = new List<FundaJSON>();
+
+        private int currentPage = 0;
+        private int pageLimit = 0;
 
         /// <summary>
         /// Parse a json string and save it.
@@ -35,7 +43,16 @@ namespace FundaAPIClient
                 if (fundaJSON != null)
                 {
                     Log.Debug("FundaRawData :: Saving Deserialized data");
+
                     Data.Add(fundaJSON);
+
+                    currentPage = Data.Last().Paging.HuidigePagina.Value;
+                    pageLimit = Data.Last().Paging.AantalPaginas.Value;
+
+                    if (currentPage % 5 == 0 || currentPage == pageLimit)
+                    {
+                        Log.Information($"FundaRawData :: Processed {GetCurrentPage()} of {GetPageLimit()} pages.");
+                    }
                 }
             }
         }
@@ -46,19 +63,8 @@ namespace FundaAPIClient
         /// <returns>current page</returns>
         public int GetCurrentPage()
         {
-            Log.Debug("FundaRawData :: Getting current json page");
-            if (Data != null && Data.Count > 0)
-            {
-                int page = Data.Last().Paging.HuidigePagina.Value;
-                Log.Debug($"FundaRawData :: Current Page is : {page}");
-                return page;
-            }
-            else
-            {
-                Log.Error("FundaRawData :: Failed to get current page, no data available.");
-                return 0;
-            }
-
+            Log.Debug($"FundaRawData :: Current Page is : {currentPage}");
+            return currentPage;
         }
 
         /// <summary>
@@ -67,18 +73,8 @@ namespace FundaAPIClient
         /// <returns>page limit</returns>
         public int GetPageLimit()
         {
-
-            if (Data != null && Data.Count > 0)
-            {
-                int pageLimit = Data.First().Paging.AantalPaginas.Value;
-                Log.Debug($"FundaRawData :: Current Page Limit : {pageLimit}");
-                return pageLimit;
-            }
-            else
-            {
-                Log.Error("FundaRawData :: Failed to get current page limit, no data available.");
-                return 0;
-            }
+            Log.Debug($"FundaRawData :: Current Page Limit : {pageLimit}");
+            return pageLimit;
         }
 
         /// <summary>
@@ -87,7 +83,7 @@ namespace FundaAPIClient
         /// <returns>true or false</returns>
         public bool IsDataComplete()
         {
-            return GetCurrentPage() == GetPageLimit();
+            return currentPage == pageLimit;
         }
     }
 }

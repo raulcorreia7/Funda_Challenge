@@ -103,7 +103,7 @@ namespace FundaAPIClient
             long now = sw.ElapsedMilliseconds;
             long lastTick = sw.ElapsedMilliseconds;
 
-
+            // Number of retries
             int currentRetryCount = 0;
 
             while (true)
@@ -125,8 +125,10 @@ namespace FundaAPIClient
                 // Get an URL to query all Amsterdam data for Makelaars, no tuins.
                 string query = ConstructURLQuery(apikey, DataType, currentPage, withTuin);
                 Log.Debug($"CrawlerFundaRestAPI :: Building new Request");
+
                 var request = new RestRequest(query, DataFormat.Json);
                 Log.Debug($"CrawlerFundaRestAPI :: Executing Request");
+
                 var response = restClient.Execute(request, Method.GET);
 
                 Log.Debug($"CrawlerFundaRestAPI :: We received an Response Status : {response.ResponseStatus}");
@@ -144,13 +146,21 @@ namespace FundaAPIClient
                                 Log.Debug($"CrawlerFundaRestAPI :: Retry Count : {currentRetryCount} / {CrawlerConstants.MAX_RETRY_COUNT}");
                                 Log.Debug($"CrawlerFundaRestAPI :: Sleeping {CrawlerConstants.API_TOO_MANY_REQUESTS_SLEEP_TIME}ms");
                                 Thread.Sleep(CrawlerConstants.API_TOO_MANY_REQUESTS_SLEEP_TIME);
+
                                 if (currentRetryCount > CrawlerConstants.MAX_RETRY_COUNT)
                                 {
                                     goto error;
                                 }
+
                                 continue;
                             default:
                                 currentRetryCount++;
+
+                                if (currentRetryCount > CrawlerConstants.MAX_RETRY_COUNT)
+                                {
+                                    goto error;
+                                }
+
                                 break;
                         }
                         break;
@@ -161,6 +171,7 @@ namespace FundaAPIClient
                                 CrawlerData.ParseJson(response.Content);
                                 currentPage = CrawlerData.GetCurrentPage();
                                 var maxPages = CrawlerData.GetPageLimit();
+                                
                                 if (currentPage >= maxPages)
                                 {
                                     goto end_gracefully;

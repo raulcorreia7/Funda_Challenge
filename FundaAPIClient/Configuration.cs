@@ -56,6 +56,5 @@ namespace FundaAPIClient
             return ConfigurationInstance;
         }
 
-
     }
 }

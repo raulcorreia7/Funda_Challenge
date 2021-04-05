@@ -54,6 +54,6 @@ namespace FundaAPIClient
         /// <summary>
         /// Sleep time in case of trigger one Too many request error (in milliseconds)
         /// </summary>
-        public const int API_TOO_MANY_REQUESTS_SLEEP_TIME = 100;
+        public const int API_TOO_MANY_REQUESTS_SLEEP_TIME = 2000;
     }
 }

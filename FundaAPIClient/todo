@@ -1,0 +1,6 @@
+* add more exceptions/errors.
+    * like API Key missing.
+
+Test against :
+    * bad url
+    * no internet
