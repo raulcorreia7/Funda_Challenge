@@ -7,7 +7,9 @@ using Serilog;
 
 namespace FundaAPIClient
 {
-
+    /// <summary>
+    /// Implemention of a Data Processor for Funda Json Data Type
+    /// </summary>
     public class FundaJsonDataProcessor : IFundaDataProcessor
     {
         public FundaResults ProcessData(FundaRawData data)
@@ -60,7 +62,8 @@ namespace FundaAPIClient
             List<Makelaar> orderedMakelaars = new List<Makelaar>(processedData.Values.OrderByDescending(m => m.Count));
             return new FundaResults()
             {
-                Results = orderedMakelaars
+                Results = orderedMakelaars,
+                IsDataComplete = data.IsDataComplete()
             };
         }
     }

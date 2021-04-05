@@ -17,19 +17,29 @@ namespace FundaAPIClient
         private FundaRawData RunCrawler(Dictionary<string, string> options)
         {
 
-            Log.Verbose("FundaAPIClient :: Starting to configure Crawler");
+            Log.Verbose("FundaAPIClient :: Configuring Crawler");
             this.CrawlerAlgorithm.Configure(options);
 
             Log.Debug($"FundaAPIClient :: Starting Crawler");
             var rawdata = this.CrawlerAlgorithm.Crawl();
-            Log.Debug("FundaAPIClient :: Finished Crawler");
+            Log.Debug("FundaAPIClient :: Finished Crawling");
 
+            if (!rawdata.IsDataComplete())
+            {
+                Log.Error("FundaAPIClient :: Crawling data was not able to gather all data!");
+            }
             return rawdata;
         }
 
         private FundaResults ProcessData(FundaRawData rawData)
         {
             Log.Debug("FundaAPIClient :: Starting to process data.");
+
+            if (!rawData.IsDataComplete())
+            {
+                Log.Error("FundaAPIClient :: Processing Incomplete Data!");
+            }
+
             var processedData = this.DataProcessor.ProcessData(rawData);
             Log.Debug("FundaAPIClient :: Finished data processing");
             return processedData;

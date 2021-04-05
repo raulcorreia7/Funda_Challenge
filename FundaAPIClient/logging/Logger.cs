@@ -19,7 +19,8 @@ namespace FundaAPIClient
             Log.Logger = new LoggerConfiguration()
               .MinimumLevel.Debug()
               .WriteTo.Console()
-              .WriteTo.File("logs/client.log", rollingInterval: RollingInterval.Day, fileSizeLimitBytes: null)
+              .WriteTo.File("logs/client_debug.log", rollingInterval: RollingInterval.Day, fileSizeLimitBytes: null, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Debug)
+              .WriteTo.File("logs/client_verbose.log", rollingInterval: RollingInterval.Day, fileSizeLimitBytes: null, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose)
               .CreateLogger();
         }
     }

@@ -116,7 +116,8 @@ namespace FundaAPIClient
                 if (delta < CrawlerConstants.API_THROTTLE_LIMIT_MILLISECS)
                 {
                     int sleepTime = (int)(CrawlerConstants.API_THROTTLE_LIMIT_MILLISECS - delta);
-                    Log.Debug($"CrawlerFundaRestAPI :: We hit the throttle limit, sleeping for {sleepTime}");
+                    Log.Debug($"CrawlerFundaRestAPI :: We hit the throttle limit, sleeping for {sleepTime}ms");
+                    Log.Debug($"CrawlerFundaRestAPI :: Throttle Limit : {CrawlerConstants.API_THROTTLE_LIMIT_MILLISECS}ms, Current Delta : {delta}ms");
                     // if so, sleep for a bit
                     Thread.Sleep(sleepTime);
                 }
@@ -177,7 +178,7 @@ namespace FundaAPIClient
         // handle error
         error:
         // to be implemented 
-        
+
         // end_gracefuly
         end_gracefully:
             sw.Stop();

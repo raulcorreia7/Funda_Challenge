@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ConsoleTables;
@@ -16,6 +17,8 @@ namespace FundaAPIClient
         /// </summary>
         public List<Makelaar> Results { get; set; }
 
+        public bool IsDataComplete { get; set; } = false;
+
         /// <summary>
         /// Gets the Top10 Makelaars.
         /// </summary>
@@ -23,12 +26,21 @@ namespace FundaAPIClient
         public IEnumerable<Makelaar> GetTop10()
         {
             Log.Debug("FundaResults :: Getting Top 10 Makelaars");
-            var results = this.Results.Take(10);
-            if (Log.IsEnabled(LogEventLevel.Verbose))
+            if (Results != null && Results.Count > 0)
             {
-                Log.Verbose($"FundaResults :: Getting Top 10 Makelaars Results : {results}");
+                var results = this.Results.Take(10);
+                if (Log.IsEnabled(LogEventLevel.Verbose))
+                {
+                    Log.Verbose($"FundaResults :: Getting Top 10 Makelaars Results : {results}");
+                }
+
+                return results;
             }
-            return results;
+            else
+            {
+                Log.Error("FundaResults :: There are no Makelaars to be returned.");
+                return new List<Makelaar>();
+            }
         }
 
         /// <summary>
@@ -38,12 +50,12 @@ namespace FundaAPIClient
         public string GetTableString()
         {
             Log.Debug("FundaResults :: Getting Table String");
-            var table = new ConsoleTable("Makelaar", "Objects");
 
             return ConsoleTable
                 .From<Makelaar>(this.GetTop10())
                 .Configure(o => o.NumberAlignment = Alignment.Right)
-                .ToStringAlternative();
+                .ToStringAlternative() + $"\n [Data is Complete : {IsDataComplete}] \n";
+
         }
 
         /// <summary>
@@ -53,12 +65,13 @@ namespace FundaAPIClient
         public void PrintTable()
         {
             Log.Debug("FundaResults :: Printing Table");
-            var table = new ConsoleTable("Makelaar", "Objects");
-
             ConsoleTable
                 .From<Makelaar>(this.GetTop10())
                 .Configure(o => o.NumberAlignment = Alignment.Right)
                 .Write();
+
+            Console.WriteLine($"[Data is Complete : {IsDataComplete}]");
+
         }
     }
 

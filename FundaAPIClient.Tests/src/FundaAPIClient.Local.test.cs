@@ -51,7 +51,7 @@ namespace FundaAPIClient.Tests
 
             // Quality of Life, outputting the Table
             var tableOutput = results.GetTableString();
-            Log.Verbose(results.GetTableString());
+            Log.Verbose("\n" + results.GetTableString());
             Assert.Contains("12285", tableOutput);
             Assert.Contains("Makelaarsland", tableOutput);
             Assert.Contains("24607", tableOutput);
@@ -95,7 +95,7 @@ namespace FundaAPIClient.Tests
 
             // Quality of Life, outputting the Table
             var tableOutput = results.GetTableString();
-            Log.Verbose(results.GetTableString());
+            Log.Verbose("\n" + results.GetTableString());
             #endregion
         }
 
