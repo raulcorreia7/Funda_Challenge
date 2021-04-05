@@ -16,6 +16,9 @@ namespace FundaAPIClient
             We are using memory to save all json files.
             For sake of alternatives we could use something else to save on memory like.
             A remote database, a localdatabase or trim the json files to the bare minimum.
+
+            Architecture alternative:
+            Reengineer architecture to be multi thread safe and provide parallel processing.
         */
         public List<FundaJSON> Data = new List<FundaJSON>();
 

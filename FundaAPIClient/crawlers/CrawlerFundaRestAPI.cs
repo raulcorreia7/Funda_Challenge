@@ -108,60 +108,74 @@ namespace FundaAPIClient
 
             while (true)
             {
+                // Let's calculate the delta between last request.
                 now = sw.ElapsedMilliseconds;
                 long delta = now - lastTick;
                 lastTick = now;
 
-                // Check if we are over the throttling limit.
+                // Check if the delta is within throttling limit.
+                // If so, report it and sleep a bit.
                 if (delta < CrawlerConstants.API_THROTTLE_LIMIT_MILLISECS)
                 {
+
                     int sleepTime = (int)(CrawlerConstants.API_THROTTLE_LIMIT_MILLISECS - delta);
                     Log.Debug($"CrawlerFundaRestAPI :: We hit the throttle limit, sleeping for {sleepTime}ms");
                     Log.Debug($"CrawlerFundaRestAPI :: Throttle Limit : {CrawlerConstants.API_THROTTLE_LIMIT_MILLISECS}ms, Current Delta : {delta}ms");
-                    // if so, sleep for a bit
                     Thread.Sleep(sleepTime);
                 }
 
-                // Get an URL to query all Amsterdam data for Makelaars, no tuins.
+                // Construct a URL to query.
                 string query = ConstructURLQuery(apikey, DataType, currentPage, withTuin);
                 Log.Debug($"CrawlerFundaRestAPI :: Building new Request");
 
+                // Construct a Request
                 var request = new RestRequest(query, DataFormat.Json);
                 Log.Debug($"CrawlerFundaRestAPI :: Executing Request");
 
+                // Execute the Request
                 var response = restClient.Execute(request, Method.GET);
 
                 Log.Debug($"CrawlerFundaRestAPI :: We received an Response Status : {response.ResponseStatus}");
+
+                // Decide what to do with the request
                 switch (response.ResponseStatus)
                 {
                     case ResponseStatus.Error:
                         switch (response.StatusCode)
                         {
+                            // If Unauthorized (API Key issues)
                             case HttpStatusCode.Unauthorized:
-                                Log.Error("CrawlerFundaRestAPI :: We are unauthorized to access the API. Something is wrong. Aborting!");
-                                throw new UnauthorizedAccessException("FundaAPI Unauthorized access.");
+                                {
+                                    Log.Error("CrawlerFundaRestAPI :: We are unauthorized to access the API. Something is wrong. Aborting!");
+                                    throw new UnauthorizedAccessException("FundaAPI Unauthorized access.");
+                                }
+                            // If we are hitting the throttling limit
                             case HttpStatusCode.TooManyRequests:
-                                Log.Debug("CrawlerFundaRestAPI :: We hit a 429 (Too Many Request Error)");
-                                currentRetryCount++;
-                                Log.Debug($"CrawlerFundaRestAPI :: Retry Count : {currentRetryCount} / {CrawlerConstants.MAX_RETRY_COUNT}");
-                                Log.Debug($"CrawlerFundaRestAPI :: Sleeping {CrawlerConstants.API_TOO_MANY_REQUESTS_SLEEP_TIME}ms");
-                                Thread.Sleep(CrawlerConstants.API_TOO_MANY_REQUESTS_SLEEP_TIME);
-
-                                if (currentRetryCount > CrawlerConstants.MAX_RETRY_COUNT)
                                 {
-                                    goto error;
-                                }
+                                    Log.Debug("CrawlerFundaRestAPI :: We hit a 429 (Too Many Request Error)");
+                                    currentRetryCount++;
+                                    Log.Debug($"CrawlerFundaRestAPI :: Retry Count : {currentRetryCount} / {CrawlerConstants.MAX_RETRY_COUNT}");
+                                    Log.Debug($"CrawlerFundaRestAPI :: Sleeping {CrawlerConstants.API_TOO_MANY_REQUESTS_SLEEP_TIME}ms");
+                                    Thread.Sleep(CrawlerConstants.API_TOO_MANY_REQUESTS_SLEEP_TIME);
 
-                                continue;
+                                    if (currentRetryCount > CrawlerConstants.MAX_RETRY_COUNT)
+                                    {
+                                        goto error;
+                                    }
+
+                                    continue;
+                                }
                             default:
-                                currentRetryCount++;
-
-                                if (currentRetryCount > CrawlerConstants.MAX_RETRY_COUNT)
                                 {
-                                    goto error;
-                                }
+                                    currentRetryCount++;
 
-                                break;
+                                    if (currentRetryCount > CrawlerConstants.MAX_RETRY_COUNT)
+                                    {
+                                        goto error;
+                                    }
+
+                                    break;
+                                }
                         }
                         break;
                     case ResponseStatus.Completed:
@@ -171,7 +185,7 @@ namespace FundaAPIClient
                                 CrawlerData.ParseJson(response.Content);
                                 currentPage = CrawlerData.GetCurrentPage();
                                 var maxPages = CrawlerData.GetPageLimit();
-                                
+
                                 if (currentPage >= maxPages)
                                 {
                                     goto end_gracefully;
@@ -188,7 +202,12 @@ namespace FundaAPIClient
             }
         // handle error
         error:
-        // to be implemented 
+            {
+                // none found.
+                // generic error.
+                throw new InvalidProgramException();
+            }
+
 
         // end_gracefuly
         end_gracefully:
