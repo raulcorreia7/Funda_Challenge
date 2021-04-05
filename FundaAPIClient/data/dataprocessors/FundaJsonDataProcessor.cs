@@ -20,15 +20,18 @@ namespace FundaAPIClient
 
 
             // Iterate Json files
+            Log.Verbose("FundaJsonDataProcessor :: Iterating JSON Files");
             foreach (var json in data.Data)
             {
                 // If there are objects in the json data
+                Log.Verbose($"FundaJsonDataProcessor :: There are {json.Objects.Count} objects.");
                 if (json.Objects.Count > 0)
                 {
                     // let's iterate them
                     foreach (var obj in json.Objects)
                     {
                         // Makelaar has id, is not null and exists.
+                        Log.Verbose($"Current Makelaar: Name : {obj.MakelaarNaam} Id : {obj.MakelaarId}");
                         if (obj.MakelaarId.HasValue &&
                         obj.MakelaarNaam != null &&
                         obj.MakelaarNaam.Length > 0)
@@ -37,6 +40,7 @@ namespace FundaAPIClient
                             // in case that makelaar already exists, incremement count
                             if (processedData.ContainsKey(id))
                             {
+                                Log.Verbose($"Current Makelaar: Name : {obj.MakelaarNaam} Id : {obj.MakelaarId} Count : {processedData[id].Count}");
                                 processedData[id].Count++;
                             }
                             else // else, create a new makelaar and save it
@@ -44,6 +48,7 @@ namespace FundaAPIClient
                                 Makelaar m = new Makelaar(id, obj.MakelaarNaam);
                                 m.Count++;
                                 processedData[id] = m;
+                                Log.Verbose($"New Makelaar found! Name : {obj.MakelaarNaam} Id : {obj.MakelaarId} Count : {processedData[id].Count}");
                             }
                         }
                     }

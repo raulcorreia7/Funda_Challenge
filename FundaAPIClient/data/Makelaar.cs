@@ -25,5 +25,10 @@ namespace FundaAPIClient
             this.Name = name;
             this.Count = 0;
         }
+
+        public override string ToString()
+        {
+            return $"Name: {Name} Id : {Id} Count : {Count}";
+        }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ConsoleTables;
 using Serilog;
+using Serilog.Events;
 
 namespace FundaAPIClient
 {
@@ -21,8 +22,13 @@ namespace FundaAPIClient
         /// <returns></returns>
         public IEnumerable<Makelaar> GetTop10()
         {
-            Log.Verbose("FundaResults :: Getting Top 10 Makelaars");
-            return this.Results.Take(10);
+            Log.Debug("FundaResults :: Getting Top 10 Makelaars");
+            var results = this.Results.Take(10);
+            if (Log.IsEnabled(LogEventLevel.Verbose))
+            {
+                Log.Verbose($"FundaResults :: Getting Top 10 Makelaars Results : {results}");
+            }
+            return results;
         }
 
         /// <summary>

@@ -6,12 +6,12 @@ using Xunit.Abstractions;
 namespace FundaAPIClient.Tests
 {
 
-    public class CrawerLocalTests
+    public class CrawlerLocalTests
     {
 
-        public CrawerLocalTests(ITestOutputHelper output)
+        public CrawlerLocalTests(ITestOutputHelper output)
         {
-            LoggerSetup.SetupLoggerForTest(output);
+            LoggerSetup.SetupLoggerForTest(output, nameof(CrawlerLocalTests));
         }
 
         /// <summary>

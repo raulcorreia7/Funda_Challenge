@@ -14,7 +14,7 @@ namespace FundaAPIClient.Tests
 
         public FundaJsonDataProcessorTests(ITestOutputHelper output)
         {
-            LoggerSetup.SetupLoggerForTest(output);
+            LoggerSetup.SetupLoggerForTest(output, nameof(FundaJsonDataProcessorTests));
 
         }
 

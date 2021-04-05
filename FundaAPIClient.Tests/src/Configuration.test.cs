@@ -8,7 +8,7 @@ namespace FundaAPIClient.Tests
 
         public ConfigurationTests(ITestOutputHelper output)
         {
-            LoggerSetup.SetupLoggerForTest(output);
+            LoggerSetup.SetupLoggerForTest(output, nameof(ConfigurationTests));
         }
         
         [Fact]

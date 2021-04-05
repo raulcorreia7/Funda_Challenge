@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Serilog;
+using Serilog.Events;
 
 namespace FundaAPIClient
 {
@@ -19,8 +20,14 @@ namespace FundaAPIClient
         /// <param name="json"></param>
         public void ParseJson(string json)
         {
-
-            Log.Debug($"FundaRawData :: Deserializing {json}");
+            if (Log.IsEnabled(LogEventLevel.Verbose))
+            {
+                Log.Verbose($"FundaRawData :: Deserializing {json}");
+            }
+            else if (Log.IsEnabled(LogEventLevel.Debug))
+            {
+                Log.Debug($"FundaRawData :: Deserializing json");
+            }
             FundaJSON fundaJSON = JsonConvert.DeserializeObject<FundaJSON>(json);
 
             if (fundaJSON != null)

@@ -12,7 +12,7 @@ namespace FundaAPIClient.Tests
 
         public FundaJSONTests(ITestOutputHelper output)
         {
-            LoggerSetup.SetupLoggerForTest(output);
+            LoggerSetup.SetupLoggerForTest(output, nameof(FundaJSONTests));
         }
 
         /// <summary>

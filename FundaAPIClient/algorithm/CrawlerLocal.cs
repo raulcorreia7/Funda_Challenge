@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using FundaAPIClient;
 using Serilog;
@@ -84,7 +85,7 @@ namespace FundaAPIClient
         /// <returns>Crawler Data</returns>
         public FundaRawData Crawl()
         {
-            Log.Verbose("CrawlerLocal :: Crawling...");
+            Log.Debug("CrawlerLocal :: Crawling...");
             return CrawlerData;
         }
         /// <summary>
@@ -100,7 +101,7 @@ namespace FundaAPIClient
         /// <param name="options">Dictionary with Key Value pair to configure Crawler.</param>
         public void Configure(Dictionary<string, string> options)
         {
-            Log.Verbose($"CrawlerLocal :: Configuring CrawlerLocal : {options.ToString()}");
+            Log.Verbose($"CrawlerLocal :: Configuring CrawlerLocal : {string.Join(Environment.NewLine, options.Select(kv => $"{kv.Key}: {kv.Value}"))}");
             Log.Debug($"CrawlerLocal :: Check if we have Key : {CrawlerConstants.MethodKey}");
             if (options.ContainsKey(CrawlerConstants.MethodKey))
             {
