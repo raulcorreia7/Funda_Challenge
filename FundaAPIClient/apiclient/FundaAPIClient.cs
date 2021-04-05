@@ -14,7 +14,7 @@ namespace FundaAPIClient
             Log.Verbose("Instancing FundaAPIClient");
         }
 
-        private FundaRawData RunCrawler(Dictionary<string, dynamic> options)
+        private FundaRawData RunCrawler(Dictionary<string, string> options)
         {
 
             Log.Debug("FundaAPIClient :: Configuring Crawler.");
@@ -49,7 +49,7 @@ namespace FundaAPIClient
         {
             Log.Information($"FundaAPIClient :: Starting GetTop10Makelaars.");
 
-            Dictionary<string, dynamic> options = new Dictionary<string, dynamic>();
+            Dictionary<string, string> options = new Dictionary<string, string>();
             options[CrawlerConstants.MethodKey] = CrawlerConstants.MethodTop10;
 
             var rawData = this.RunCrawler(options);

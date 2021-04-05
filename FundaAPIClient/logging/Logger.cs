@@ -9,7 +9,7 @@ namespace FundaAPIClient
 
     public class Logger
     {
-        private static LoggingLevelSwitch levelSwitch = null;
+        private static LoggingLevelSwitch levelswitch = null;
         public Logger()
         {
         }
@@ -20,15 +20,15 @@ namespace FundaAPIClient
             Log.Logger = logger;
         }
 
-        public static void SetupDefaultLogger(LogEventLevel defaultLevel = LogEventLevel.Debug)
+        public static void SetupDefaultLogger(LogEventLevel defaultLevel = LogEventLevel.Information)
         {
-            levelSwitch = new LoggingLevelSwitch(defaultLevel);
+            levelswitch = new LoggingLevelSwitch(defaultLevel);
+            levelswitch.MinimumLevel = defaultLevel;
             Log.Logger = new LoggerConfiguration()
-              .WriteTo.File("logs/client_debug.log", rollingInterval: RollingInterval.Hour, fileSizeLimitBytes: null, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Debug)
-              .WriteTo.File("logs/client_verbose.log", rollingInterval: RollingInterval.Hour, fileSizeLimitBytes: null, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose)
+              .MinimumLevel.ControlledBy(levelswitch)
+              .WriteTo.File("logs/client.log", rollingInterval: RollingInterval.Hour, fileSizeLimitBytes: null)
               .WriteTo.Console(restrictedToMinimumLevel: defaultLevel)
               .CreateLogger();
-
             Log.Debug("Logger :: Initialized logger.");
         }
     }

@@ -34,7 +34,7 @@ namespace FundaAPIClient
         /// <summary>
         /// Percentage of max API calls to effectively use.
         /// </summary>
-        public const double API_CALLS_PERCENTAGE = 0.90;
+        public const double API_CALLS_PERCENTAGE = 0.95;
 
         /// <summary>
         /// Calculates the number of API calls per second to not trigger Too many request errors (in seconds)

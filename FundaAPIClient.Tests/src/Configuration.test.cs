@@ -10,12 +10,15 @@ namespace FundaAPIClient.Tests
         {
             LoggerSetup.SetupLoggerForTest(output, nameof(ConfigurationTests));
         }
-        
+
         [Fact]
         public void TestConfigFileIsGood()
         {
+            #region Scenario Setup
             Configuration config = Configuration.LoadConfiguration();
+            #endregion
 
+            #region Assertion
             // Assert configuration exists
             Assert.NotNull(config);
 
@@ -30,6 +33,7 @@ namespace FundaAPIClient.Tests
             // Assert Query exists and not empty
             Assert.NotNull(config.Query);
             Assert.True(config.Query.Length > 0);
+            #endregion
         }
     }
 }

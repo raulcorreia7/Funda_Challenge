@@ -10,9 +10,13 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Library.Tests/bin/Debug/net5.0/Library.Tests.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/Library.Tests",
+            "program": "${workspaceFolder}/FundaAPIClient/bin/Debug/net5.0/FundaAPIClient.dll",
+            "args": [
+                "--debug",
+                "--apikey=ac1b0b1572524640a0ecc54de453ea9f",
+                "--query=all"
+            ],
+            "cwd": "${workspaceFolder}/FundaAPIClient",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false

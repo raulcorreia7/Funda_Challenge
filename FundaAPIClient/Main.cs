@@ -11,14 +11,21 @@ namespace FundaAPIClient
 
         const string USAGE =
         @"
-        Usage: fundaclient (--apikey=<key>) (--query=<q>) [--quiet | --verbose] 
+        Usage: 
+            fundaclient (--apikey=<key>) (--query=<q>) [--quiet | --debug | --verbose] 
+            fundaclient --apikey=mykey --query=all
+            fundaclient --apikey=mykey --query=tuin
+            fundaclient --apikey=mykey --query=all --quiet
+            fundaclient --apikey=mykey --query=tuin --verbose
 
-        -h --help Show help.
-        -s --sorted Sorted output.
-        --apikey=<key> API key for funda api endpoint.
-        --query=<q> Type of query : all or tuin.
-        --quiet Minimal printing of logs.
-        --verbose Verbose printing of logs.
+        Options
+            -h --help Show help.
+            -s --sorted Sorted output.
+            --apikey=<key> API key for funda api endpoint.
+            --query=<q> Type of query : all or tuin.
+             --quiet Minimal printing of logs.
+            --verbose Verbose printing of logs.
+            --debug Debug printing of logs.
         ";
         static void Main(string[] args)
         {
@@ -30,20 +37,31 @@ namespace FundaAPIClient
             {
                 switch (argument.Key)
                 {
-                    case "--apikey":
-                        Configuration.GetConfiguration().APIKey = argument.Value.ToString();
+                    case "--verbose":
+                        if (argument.Value.IsFalse == false)
+                        {
+                            Logger.SetupDefaultLogger(LogEventLevel.Verbose);
+                        }
+                        break;
+                    case "--debug":
+                        if (argument.Value.IsFalse == false)
+                        {
+                            Logger.SetupDefaultLogger(LogEventLevel.Debug);
+                        }
                         break;
                     case "--quiet":
-                        Logger.SetupDefaultLogger(LogEventLevel.Information);
-                        break;
-                    case "--verbose":
-                        Logger.SetupDefaultLogger(LogEventLevel.Verbose);
+                        if (argument.Value.IsFalse == false)
+                        {
+                            Logger.SetupDefaultLogger(LogEventLevel.Error);
+                        }
                         break;
                     default:
                         break;
                 }
             }
+            Configuration.GetConfiguration().APIKey = arguments["--apikey"].ToString();
 
+            Log.Information($"Application :: Starting...");
             FundaClientBuilder builder = new FundaClientBuilder();
 
             IFundaAPIClient fundaClient = builder.WithRestAPICrawler()
@@ -67,16 +85,20 @@ namespace FundaAPIClient
                     Environment.Exit(1);
                     break;
             }
-            if (result == null || result.IsDataComplete == false)
+            if (result == null ||
+                result.IsDataComplete == false)
             {
                 Log.Error($"Application :: Failed to execute {method}.");
+                Environment.Exit(1);
             }
 
             if (result != null &&
                 result.IsDataComplete)
             {
                 string table = result.GetTableString();
-                Log.Information($"Application :: Result of {method} is \n {table}\n");
+                Log.Debug($"Application :: Result of {method} is \n {table}\n");
+                Console.WriteLine($"Application :: Result of {method} is \n {table}\n");
+
             }
 
             Environment.Exit(0);

@@ -23,8 +23,11 @@ namespace FundaAPIClient.Tests
         [Fact]
         public void SucessfullyParseLocalJsonDataAllAmsterdam()
         {
+            #region ScenarioSetup
             FundaJSON json = JsonConvert.DeserializeObject<FundaJSON>(File.ReadAllText(CrawlerLocal.ALL_AMSTERDAM_FOLDER + "/p1.json"));
+            #endregion
 
+            #region Assertion
             // Assert we have a succesfull deserialization
             Assert.NotNull(json);
 
@@ -52,6 +55,7 @@ namespace FundaAPIClient.Tests
 
             // Let's assert there is a string to crawl next
             Assert.True(json.Paging.VolgendeUrl.Length > 0);
+            #endregion
 
         }
 
@@ -63,8 +67,11 @@ namespace FundaAPIClient.Tests
         [Fact]
         public void SucessfullyParseLocalJsonDataAmsterdamTuin()
         {
+            #region Scenario Setup
             FundaJSON json = JsonConvert.DeserializeObject<FundaJSON>(File.ReadAllText(CrawlerLocal.ALL_AMSTERDAM_WITH_TUIN_FOLDER + "/p1.json"));
+            #endregion
 
+            #region Assertion
             // Assert we have a succesfull deserialization
             Assert.NotNull(json);
 
@@ -91,6 +98,7 @@ namespace FundaAPIClient.Tests
 
             // Let's assert there is a string to crawl next
             Assert.True(json.Paging.VolgendeUrl.Length > 0);
+            #endregion
 
         }
     }
