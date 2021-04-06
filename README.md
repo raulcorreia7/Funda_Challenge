@@ -89,7 +89,7 @@
 
 This project is a challenge proposed by Funda.
 
-Funda sent some requirements to consume a private API and present the Top 10 Makelaars in Amsterdam. This can be all Amsterdam houses or just with Tuin (Gardens). There are no more hard requirements beside these.
+The requirements were to consume a private API and present the Top 10 Makelaars (Real estate agent) in Amsterdam. This can be all Amsterdam houses or just with Tuin (Gardens). There are no more hard requirements beside these.
 
 
 ### Built With
