@@ -95,7 +95,7 @@ namespace FundaAPIClient
             Log.Information($"FundaAPIClient :: Starting GetTop10MakelaarsWithTuin.");
 
             Dictionary<string, string> options = new Dictionary<string, string>();
-            options[CrawlerConstants.MethodKey] = CrawlerConstants.MethodTop10;
+            options[CrawlerConstants.MethodKey] = CrawlerConstants.MethodTop10WithTuin;
 
             var rawData = this.RunCrawler(options);
 
