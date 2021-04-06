@@ -33,7 +33,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/raulcorreia7/Funda_Challenge">
-    <img src="assets/logo.png" alt="Logo" width="80" height="80">
+    <img src="assets/logo.png" alt="Logo" width="140" height="140">
   </a>
 
   <h3 align="center">Funda Challenge</h3>
@@ -72,8 +72,8 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <!-- <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li> -->
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
@@ -196,7 +196,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email
+Raúl Correia - raulcorreia7@gmail.com
 
 Project Link: [https://github.com/raulcorreia7/Funda_Challenge](https://github.com/raulcorreia7/Funda_Challenge)
 
@@ -205,9 +205,8 @@ Project Link: [https://github.com/raulcorreia7/Funda_Challenge](https://github.c
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
-* []()
-* []()
-* []()
+* [Funda](https://www.funda.nl)
+* [LinkedIn](https://www.linkedin.com)
 
 
 
