@@ -181,9 +181,12 @@ dotnet run -- --apikey=mykey --query=tuin
 
 ```
 
-After running, the results will display in the console output.
+After running, the results will display in the console output with the desired logging level.
+
 All output will be logged where the binaries are located.
+
 example: bin/debug/net5.0/logs
+
 Testing will log with multiple log levels (Information, Debug, Verbose), so if you wish to see what happens behind the scenes, check the Test folder for the same thing.
 <!-- _For more examples, please refer to the [Documentation](https://example.com)_ -->
 
