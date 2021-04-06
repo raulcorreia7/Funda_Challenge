@@ -87,9 +87,9 @@
 
 ![Application Screenshot](assets/application_screenshot.png)
 
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`raulcorreia7`, `Funda_Challenge`, `twitter_handle`, `email`, `project_title`, `project_description`
+This project is a challenge proposed by Funda.
+
+Funda sent some requirements to consume a private API and present the Top 10 Makelaars in Amsterdam. This can be all Amsterdam houses or just with Tuin (Gardens). There are no more hard requirements beside these.
 
 
 ### Built With
