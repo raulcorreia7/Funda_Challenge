@@ -125,9 +125,22 @@ You can run this in Linux or Windows.
         # or
     dotnet build
    ```
+3. Create Config.json
+   ```sh
+    # in root folder of git
+    # go to project
+    cd FundaAPIClient
+
+    cp config_template.json config.json
+    # replace the API_KEY in config.json.
+    
+    # go back to root.
+    cd ..
+   ```
 3. Test the project
     ```sh
-    # in root folder of git
+    #in root folder of git
+    #ensure config.json exists.
     make test
         # or
     dotnet test
@@ -135,6 +148,8 @@ You can run this in Linux or Windows.
 4. Run the project
     ```sh
     cd FundaAPIClient
+
+    # ensure config.json exists.
 
     dotnet run -- --apikey=MYKEY --query=all
     ```
