@@ -11,22 +11,12 @@ namespace FundaAPIClient
     {
 
         /// <summary>
-        /// BaseURL for FundaAPI
+        /// API Key for FundaAPI.
+        /// Please overwrite the config.json {"APIKey" : "value"}
+        /// For testing purposes.
+        /// Or override this current value in your test
         /// </summary>
-        /// <value></value>
-        public string BaseUrl { get; set; }
-
-        /// <summary>
-        /// API Key for FundaAPI
-        /// </summary>
-        /// <value></value>
         public string APIKey { get; set; }
-
-        /// <summary>
-        ///  Query
-        /// </summary>
-        /// <value></value>
-        public string Query { get; set; }
 
         private static readonly string ConfigurationFile = "config.json";
 

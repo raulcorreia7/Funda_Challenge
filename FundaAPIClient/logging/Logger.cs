@@ -7,19 +7,24 @@ using Serilog.Events;
 namespace FundaAPIClient
 {
 
+    /// <summary>
+    ///  Logger Utility Class
+    /// </summary>
     public class Logger
     {
+
+        /// <summary>
+        /// Switch to change logging level dynamically
+        /// </summary>
         private static LoggingLevelSwitch levelswitch = null;
         public Logger()
         {
         }
 
-
-        public static void RegisterLogger(ILogger logger)
-        {
-            Log.Logger = logger;
-        }
-
+        /// <summary>
+        /// Construct a Logger with safe defaults
+        /// </summary>
+        /// <param name="defaultLevel">Minimum level to log.</param>
         public static void SetupDefaultLogger(LogEventLevel defaultLevel = LogEventLevel.Information)
         {
             levelswitch = new LoggingLevelSwitch(defaultLevel);

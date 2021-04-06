@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Serilog;
 using Serilog.Events;
 
@@ -35,7 +36,7 @@ namespace FundaAPIClient
             {
                 if (Log.IsEnabled(LogEventLevel.Verbose))
                 {
-                    Log.Verbose($"FundaRawData :: Deserializing {json}");
+                    Log.Verbose($"FundaRawData :: Deserializing {FormatJson(json)}");
                 }
                 else if (Log.IsEnabled(LogEventLevel.Debug))
                 {
@@ -87,6 +88,36 @@ namespace FundaAPIClient
         public bool IsDataComplete()
         {
             return currentPage == pageLimit;
+        }
+
+        /// <summary>
+        /// Stack OverFlow C# fast JSON Pretty Print without Deserialization
+        /// Source : https://stackoverflow.com/a/57100143
+        /// </summary>
+        /// <param name="json"></param>
+        /// <param name="indent"></param>
+        /// <returns></returns>
+        private static string FormatJson(string json, string indent = "  ")
+        {
+            var indentation = 0;
+            var quoteCount = 0;
+            var escapeCount = 0;
+
+            var result =
+                from ch in json ?? string.Empty
+                let escaped = (ch == '\\' ? escapeCount++ : escapeCount > 0 ? escapeCount-- : escapeCount) > 0
+                let quotes = ch == '"' && !escaped ? quoteCount++ : quoteCount
+                let unquoted = quotes % 2 == 0
+                let colon = ch == ':' && unquoted ? ": " : null
+                let nospace = char.IsWhiteSpace(ch) && unquoted ? string.Empty : null
+                let lineBreak = ch == ',' && unquoted ? ch + Environment.NewLine + string.Concat(Enumerable.Repeat(indent, indentation)) : null
+                let openChar = (ch == '{' || ch == '[') && unquoted ? ch + Environment.NewLine + string.Concat(Enumerable.Repeat(indent, ++indentation)) : ch.ToString()
+                let closeChar = (ch == '}' || ch == ']') && unquoted ? Environment.NewLine + string.Concat(Enumerable.Repeat(indent, --indentation)) + ch : ch.ToString()
+                select colon ?? nospace ?? lineBreak ?? (
+                    openChar.Length > 1 ? openChar : closeChar
+                );
+
+            return string.Concat(result);
         }
     }
 }
