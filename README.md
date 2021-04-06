@@ -97,6 +97,7 @@ Here's a blank template to get started:
 * [.NET 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
 * [Visual Studio Code](https://code.visualstudio.com/)
 * [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+* Windows 10
 
 
 
