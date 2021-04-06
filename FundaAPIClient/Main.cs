@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.Runtime.CompilerServices;
 using DocoptNet;
 using Serilog;
 using Serilog.Events;
@@ -59,7 +60,16 @@ namespace FundaAPIClient
                         break;
                 }
             }
-            Configuration.GetConfiguration().APIKey = arguments["--apikey"].ToString();
+            try
+            {
+                var config = Configuration.GetConfiguration();
+                config.APIKey = arguments["--apikey"].ToString();
+            }
+            catch (Exception)
+            {
+                Environment.Exit(1);
+            }
+
 
             Log.Information($"Application :: Starting...");
             FundaClientBuilder builder = new FundaClientBuilder();
