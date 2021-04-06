@@ -43,9 +43,9 @@
     <br />
     <a href="https://github.com/raulcorreia7/Funda_Challenge"><strong>Explore the docs »</strong></a>
     <br />
-    <br />
-    <a href="https://github.com/raulcorreia7/Funda_Challenge">View Demo</a>
-    ·
+    <!-- <br /> -->
+    <!-- <a href="https://github.com/raulcorreia7/Funda_Challenge">View Demo</a>
+    · -->
     <a href="https://github.com/raulcorreia7/Funda_Challenge/issues">Report Bug</a>
     ·
     <a href="https://github.com/raulcorreia7/Funda_Challenge/issues">Request Feature</a>
@@ -85,7 +85,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![Application Screenshot](assets/application_screenshot.png)
 
 Here's a blank template to get started:
 **To avoid retyping too much info. Do a search and replace with your text editor for the following:**
@@ -94,9 +94,10 @@ Here's a blank template to get started:
 
 ### Built With
 
-* []()
-* []()
-* []()
+* [.NET 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
+* [Visual Studio Code](https://code.visualstudio.com/)
+* [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+
 
 
 
@@ -107,7 +108,7 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-You need the latest .NET 5.0 installation to run this application.
+You need the latest .NET 5.0 SDK installation to run this application.
 You can run this in Linux or Windows.
 
 ### Installation
@@ -118,45 +119,62 @@ You can run this in Linux or Windows.
    ```
 2. Build the project
    ```sh
+   # in root folder of git
     make build
         # or
     dotnet build
    ```
 3. Test the project
     ```sh
+    # in root folder of git
     make test
         # or
     dotnet test
     ```
 4. Run the project
     ```sh
-    make run
-        # or
-    dotnet run --project FundaAPIClient
+    cd FundaAPIClient
+
+    dotnet run -- --apikey=MYKEY --query=all
     ```
 5. Build and test
     ```sh
+    # in root folder of git
     make all
     ```
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+```sh
+# go to project
+cd FundaAPIClient
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+#run help
+dotnet run -- --help
+Usage:
+            fundaclient (--apikey=<key>) (--query=<q>) [--quiet | --debug | --verbose]
+            fundaclient --apikey=mykey --query=all
+            fundaclient --apikey=mykey --query=tuin
+            fundaclient --apikey=mykey --query=all --quiet
+            fundaclient --apikey=mykey --query=tuin --verbose
+            
+#example:
+dotnet run -- --apikey=mykey --query=tuin
+```
+<!-- _For more examples, please refer to the [Documentation](https://example.com)_ -->
 
 
 
 <!-- ROADMAP -->
-## Roadmap
+<!-- ## Roadmap
 
-See the [open issues](https://github.com/raulcorreia7/Funda_Challenge/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/raulcorreia7/Funda_Challenge/issues) for a list of proposed features (and known issues). -->
 
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+<!-- ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -164,7 +182,7 @@ Contributions are what make the open source community such an amazing place to b
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+5. Open a Pull Request -->
 
 
 
@@ -197,15 +215,15 @@ Project Link: [https://github.com/raulcorreia7/Funda_Challenge](https://github.c
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/raulcorreia7/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/raulcorreia7/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/raulcorreia7/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/raulcorreia7/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/raulcorreia7/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/raulcorreia7/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/raulcorreia7/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/raulcorreia7/repo/issues
-[license-shield]: https://img.shields.io/github/license/raulcorreia7/repo.svg?style=for-the-badge
-[license-url]: https://github.com/raulcorreia7/repo/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/raulcorreia7/Funda_Challenge.svg?style=for-the-badge
+[contributors-url]: https://github.com/raulcorreia7/Funda_Challenge/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/raulcorreia7/Funda_Challenge.svg?style=for-the-badge
+[forks-url]: https://github.com/raulcorreia7/Funda_Challenge/network/members
+[stars-shield]: https://img.shields.io/github/stars/raulcorreia7/Funda_Challenge.svg?style=for-the-badge
+[stars-url]: https://github.com/raulcorreia7/Funda_Challenge/stargazers
+[issues-shield]: https://img.shields.io/github/issues/raulcorreia7/Funda_Challenge.svg?style=for-the-badge
+[issues-url]: https://github.com/raulcorreia7/Funda_Challenge/issues
+[license-shield]: https://img.shields.io/github/license/raulcorreia7/Funda_Challenge.svg?style=for-the-badge
+[license-url]: https://github.com/raulcorreia7/Funda_Challenge/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/raulcorreia7
