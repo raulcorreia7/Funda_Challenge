@@ -34,6 +34,8 @@ namespace FundaAPIClient
 
             var docopt = new Docopt();
             var arguments = docopt.Apply(USAGE, args, exit: true);
+
+            bool loggerInitialized = false;
             foreach (var argument in arguments)
             {
                 switch (argument.Key)
@@ -41,18 +43,21 @@ namespace FundaAPIClient
                     case "--verbose":
                         if (argument.Value.IsFalse == false)
                         {
+                            loggerInitialized = true;
                             Logger.SetupDefaultLogger(LogEventLevel.Verbose);
                         }
                         break;
                     case "--debug":
                         if (argument.Value.IsFalse == false)
                         {
+                            loggerInitialized = true;
                             Logger.SetupDefaultLogger(LogEventLevel.Debug);
                         }
                         break;
                     case "--quiet":
                         if (argument.Value.IsFalse == false)
                         {
+                            loggerInitialized = true;
                             Logger.SetupDefaultLogger(LogEventLevel.Error);
                         }
                         break;
@@ -60,6 +65,12 @@ namespace FundaAPIClient
                         break;
                 }
             }
+
+            if (loggerInitialized == false)
+            {
+                Logger.SetupDefaultLogger();
+            }
+
             try
             {
                 var config = Configuration.GetConfiguration();
