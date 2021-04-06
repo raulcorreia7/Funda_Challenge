@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Library.Tests/Library.Tests.csproj",
+                "${workspaceFolder}/FundaAPIClient/FundaAPIClient.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/Library.Tests/Library.Tests.csproj",
+                "${workspaceFolder}/FundaAPIClient/FundaAPIClient.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,7 +32,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/Library.Tests/Library.Tests.csproj",
+                "${workspaceFolder}/FundaAPIClient/FundaAPIClient.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

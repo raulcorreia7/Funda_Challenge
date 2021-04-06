@@ -11,6 +11,3 @@ build:
 
 clean:
 	dotnet clean
-
-run:
-	dotnet run --project FundaAPIClient
