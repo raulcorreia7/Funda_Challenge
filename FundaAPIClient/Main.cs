@@ -71,15 +71,8 @@ namespace FundaAPIClient
                 Logger.SetupDefaultLogger();
             }
 
-            try
-            {
-                var config = Configuration.GetConfiguration();
-                config.APIKey = arguments["--apikey"].ToString();
-            }
-            catch (Exception)
-            {
-                Environment.Exit(1);
-            }
+            var config = Configuration.GetConfiguration();
+            config.APIKey = arguments["--apikey"].ToString();
 
 
             Log.Information($"Application :: Starting...");
@@ -121,6 +114,8 @@ namespace FundaAPIClient
                 Console.WriteLine($"Application :: Result of {method} is \n {table}\n");
 
             }
+
+            Configuration.SaveConfiguration();
 
             Environment.Exit(0);
         }

@@ -38,8 +38,8 @@ namespace FundaAPIClient
             }
             else
             {
-                Log.Error("Configuration :: Missing config.json! Please copy from config_template.json to config.json, and change the APIKey!");
-                throw new FileNotFoundException("Not found config.json!");
+                Log.Error("Configuration :: Missing config.json! Creating new without informatio..");
+                ConfigurationInstance = new Configuration();
             }
             return ConfigurationInstance;
         }
@@ -52,6 +52,14 @@ namespace FundaAPIClient
                 LoadConfiguration();
             }
             return ConfigurationInstance;
+        }
+
+        public static void SaveConfiguration()
+        {
+            Log.Debug($"Configuration :: Saving..");
+
+            var json = JsonConvert.SerializeObject(ConfigurationInstance);
+            File.WriteAllText(ConfigurationFile, json);
         }
 
     }
