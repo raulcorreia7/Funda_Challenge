@@ -29,16 +29,24 @@ namespace FundaAPIClient
 
         public static Configuration LoadConfiguration()
         {
-            Log.Debug($"Loading {ConfigurationFile}");
-            var lines = File.ReadAllText(ConfigurationFile);
-            ConfigurationInstance = JsonConvert.DeserializeObject<Configuration>(lines);
-            Log.Debug($"Loaded {ConfigurationFile} sucessfully!");
+            Log.Debug($"Configuration :: Loading {ConfigurationFile}");
+            if (File.Exists(ConfigurationFile))
+            {
+                var lines = File.ReadAllText(ConfigurationFile);
+                ConfigurationInstance = JsonConvert.DeserializeObject<Configuration>(lines);
+                Log.Debug($"Configuration ::Loaded {ConfigurationFile} sucessfully!");
+            }
+            else
+            {
+                Log.Error("Configuration :: Missing config.json! Please copy from config_template.json to config.json, and change the APIKey!");
+                throw new FileNotFoundException("Not found config.json!");
+            }
             return ConfigurationInstance;
         }
 
         public static Configuration GetConfiguration()
         {
-            Log.Debug($"Acessing GetConfiguration()");
+            Log.Debug($"Configuration :: Acessing GetConfiguration()");
             if (ConfigurationInstance == null)
             {
                 LoadConfiguration();
